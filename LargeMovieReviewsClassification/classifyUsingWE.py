@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-dataset=pd.read_csv('/gdrive/My Drive/Colab Notebooks/emotionRec/theFinalDatasetMovieReviews.csv', names=['reviews'])
+dataset=pd.read_csv('theFinalDatasetMovieReviews.csv', names=['reviews'])
 x=[]
 y=[]
 for i in range(0, 49968):
