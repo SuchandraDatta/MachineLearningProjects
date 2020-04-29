@@ -45,9 +45,9 @@ def plot_graph(plot_on_x, plot_on_y, typeOfGraph, col):
     plt.scatter(plot_on_x[1], plot_on_y[1], color=col[1])
     plt.show()
 
-'''def feature_scaling(on_this_array):
+def feature_scaling(on_this_array):
   if(len(on_this_array.shape)==2):
-    on_this_array=on_this_array.astype(np.double)   SOMETHING WRONG HERE
+    on_this_array=on_this_array.astype(np.double)  
     for i in range(0, len(on_this_array[0])):
       meanValue=np.mean(on_this_array[:, i])
       stdValue=np.std(on_this_array[:, i])
@@ -57,7 +57,7 @@ def plot_graph(plot_on_x, plot_on_y, typeOfGraph, col):
     y_meanValue=np.mean(on_this_array)
     y_stdValue=np.std(on_this_array)
     on_this_array=(on_this_array[:]-y_meanValue)/y_stdValue
-  return on_this_array'''
+  return on_this_array
 
 def gradientDescent(x,y, category):
   sum1=0
