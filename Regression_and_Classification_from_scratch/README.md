@@ -1,3 +1,10 @@
+Implemented so far
+1. Linear Regression
+2. Logistic Regression
+3. KNN
+4. K means clustering
+5. Naive Bayes
+
 
 :fallen_leaf: **1. Linear Regression with L2 regularization(Ridge regression)**
 
