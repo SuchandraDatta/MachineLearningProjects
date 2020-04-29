@@ -4,6 +4,7 @@ Implemented so far
 3. KNN
 4. K means clustering
 5. Naive Bayes
+<br/><br/><br/><br/>
 
 
 :fallen_leaf: **1. Linear Regression with L2 regularization(Ridge regression)**
@@ -34,3 +35,13 @@ Before clustering
 
 ![pic2](https://user-images.githubusercontent.com/41965125/80491405-4aaea480-8980-11ea-829a-6d19eff69bb2.png)
 After clustering
+
+
+:fallen_leaf: **5. Naive Bayes**        
+
+![pic3NB](https://user-images.githubusercontent.com/41965125/80607744-7b134300-8a53-11ea-8f19-145ef74f9b8f.png)
+Blue dots are label 0 green dots label 1
+
+
+![pic4NB](https://user-images.githubusercontent.com/41965125/80607751-7cdd0680-8a53-11ea-9f47-fdef273fab8f.png)
+Test points predicted label 0 are purple, predicted label 1 are red.
