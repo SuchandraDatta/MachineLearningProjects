@@ -11,5 +11,12 @@ So transfer learning was applied<br/>
 :herb:Unfreezing all layers and fine-tuning
 <br/>
 Best model performance was got with VGG16.
+Training accuracy=98%
+Test accuracy=91%
+
+Next ResNet50 was fine-tuned. Small batch sizes of 64 were not of any use. 
+Training accuracy=91%
+Testing accuracy=87%
+Both models classify lions as cats and wolves as dogs. VGG16 performs better, classfies cartoon dog and cat images correctly too.
 
 
