@@ -10,7 +10,7 @@ model.load_weights('.\\modelweightsVGG16.h5') #load weights
 
 from PIL import Image
 import numpy as np
-image=Image.open('./test_images/cat5.jpg').resize((64,64)).convert('L')
+image=Image.open('./test_images/dog4.jpg').resize((64,64)).convert('L')
 image=np.asarray(image)
 image=image.flatten()
 image=[x for x in image]#No normalization as it wasn't done during training
@@ -31,3 +31,6 @@ else:
     print("IT'S A DOG")
 #For lion picture, it classifies as cat | For wolf, it's a dog | For penguin, it's 0.5 and panther is classified dog
 #Also, correct classification even if the image input is RGB or grayscale copied 3 times
+
+#Cartoon dogs YES
+#Cartoon cats 

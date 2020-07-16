@@ -33,7 +33,6 @@ x = Dense(1, activation='sigmoid')(x)
 #create the new model
 model = Model(input=vgg_model.input, output=x)
 #print(model.summary())
-#image=load_img('/content/drive/My Drive/Colab Notebooks/dogCat/dog.jpg', target_size=(224,224))
 '''image=img_to_array(image)
 image=image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
 image=preprocess_input(image)
@@ -43,7 +42,7 @@ label=decode_predictions(yhat)
 label=label[0][0]
 print('%s (%.2f%%)'%(label[1], label[2]*100))'''
 import pandas as pd
-dataset=pd.read_csv('/content/drive/My Drive/Colab Notebooks/dogCat/theFinalDataset.csv')
+dataset=pd.read_csv('theFinalDataset.csv')
 image_array = []
 classLabels=[]
 
@@ -130,9 +129,9 @@ from sklearn.metrics import classification_report
 print(classification_report(y_test, ANSWER))
 
 model_json = model.to_json()
-with open("/content/drive/My Drive/Colab Notebooks/dogCat/modelVGG16.json", "w") as json_file:
+with open("modelVGG16.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("/content/drive/My Drive/Colab Notebooks/dogCat/modelweightsVGG16.h5")
+model.save_weights("modelweightsVGG16.h5")
 
 
