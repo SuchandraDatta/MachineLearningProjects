@@ -7,7 +7,6 @@ from keras.layers import Dropout
 import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
 
-#from the output above, we saw that block5_pool is the last/top layer of the vgg16 we have so we will add our layers from that point
 resnet50_model=ResNet50(include_top=False, input_shape=(64,64,3))
 layer_dict = dict([(layer.name, layer) for layer in resnet50_model.layers])
 
@@ -22,19 +21,12 @@ x = Dense(128, activation='relu')(x)
 x = Dropout(0.2)(x)
 #this is the final layer so the size of output in this layer is equal to the number of class in our problem
 x = Dense(1, activation='sigmoid')(x)
-#create the new model
-model = Model(input=resnet50_model.input, output=x)
+#create the new model #create the new model(recently the Model parameters were changed from input to inputs and output changed to outputs so it's now inputs = resnet50_model.input)
+model = Model(inputs=resnet50_model.input, outputs=x)
 print(model.summary())
-'''image=img_to_array(image)
-image=image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-image=preprocess_input(image)
 
-yhat=model.predict(image)
-label=decode_predictions(yhat)
-label=label[0][0]
-print('%s (%.2f%%)'%(label[1], label[2]*100))'''
 import pandas as pd
-dataset=pd.read_csv('theFinalDataset.csv')
+dataset=pd.read_csv('../dataset/theFinalDataset.csv')
 image_array = []
 classLabels=[]
 
@@ -42,17 +34,11 @@ for j in range(0, 10000):
  pyString=dataset.iloc[j].tolist()
  classLabels.append(np.array(pyString[0][-1]))
  for index, item in enumerate(pyString):
-        # 48x48
         data = np.zeros((64,64), dtype=np.uint8)
         # split space separated ints
         pixel_data = item.split()
-        
-
-        # 0 -> 47, loop through the rows
         for i in range(0, 64):
-            # (0 = 0), (1 = 47), (2 = 94), ...
             pixel_index = i * 64
-            # (0 = [0:47]), (1 = [47: 94]), (2 = [94, 141]), ...
             data[i] = pixel_data[pixel_index:pixel_index + 64]
 
         normData=[x for x in data]#Remove the /255 normalization
@@ -73,6 +59,9 @@ x_train, x_test, y_train, y_test = train_test_split(image_array, classLabels, te
 
 x_train=x_train.reshape(x_train.shape[0],64,64,3)
 x_test=x_test.reshape(x_test.shape[0], 64,64,3)
+#New Tensorflow changes, the y values MUST BE A NUMPY ARRAY can't be a list anymore
+y_train = np.asarray(y_train)
+y_test = np.asarray(y_test)
 
 gen = ImageDataGenerator(featurewise_center=False,
                         featurewise_std_normalization=False,
@@ -94,7 +83,7 @@ print('Test loss:', test_score[0])
 print('Test accuracy:', 100*test_score[1])
 
 model_json = model.to_json()
-with open("modelResNet50.json", "w") as json_file:
+with open("../model/modelResNet50.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("modelweightsResNet50.h5")
+model.save_weights("../model/modelweightsResNet50.h5")
