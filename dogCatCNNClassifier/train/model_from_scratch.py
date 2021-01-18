@@ -62,7 +62,8 @@ x_train, x_test, y_train, y_test = train_test_split(image_array, classLabels, te
 
 x_train=x_train.reshape(x_train.shape[0],64,64,1)
 x_test=x_test.reshape(x_test.shape[0], 64,64,1)
-
+y_test = np.asarray(y_test)
+y_train = np.asarray(y_train)
 
 gen = ImageDataGenerator(featurewise_center=False,
                         featurewise_std_normalization=False,
@@ -72,8 +73,8 @@ gen = ImageDataGenerator(featurewise_center=False,
                         zoom_range=.1,
                         horizontal_flip=True)
 
-train_generator = gen.flow(x_train, y_train, batch_size=256)
-history=model.fit_generator(train_generator, steps_per_epoch=256, epochs=75)
+train_generator = gen.flow(x_train, y_train, batch_size=128)
+history=model.fit_generator(train_generator, steps_per_epoch=len(x_train)//128, epochs=70)
 
 train_score = model.evaluate(x_train, y_train, verbose=0)
 print('Train loss:', train_score[0])
@@ -83,11 +84,6 @@ test_score = model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', test_score[0])
 print('Test accuracy:', 100*test_score[1])
   
-model_json = model.to_json()
-with open("../model/binary_classifier_from_scratch.json", "w") as json_file:
-    json_file.write(model_json)
-# serialize weights to HDF5
-model.save_weights("../model/binary_classifier_model_weights.h5")
 
 
 

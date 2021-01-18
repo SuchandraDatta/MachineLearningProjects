@@ -9,12 +9,12 @@ import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import regularizers
 
-#From output after plotting the layer names, we saw that block5_pool is the last/top layer of the vgg16 we have so we will add our layers from that point
+
+#from the output above, we saw that block5_pool is the last/top layer of the vgg16 we have so we will add our layers from that point
 vgg_model=VGG16(include_top=False, input_shape=(64,64,3))
 layer_dict = dict([(layer.name, layer) for layer in vgg_model.layers])
 #for layer in vgg_model.layers:
 #  layer.trainable=False
-#BY NOT FREEZING THE LAYERS BETTER TEST ACCURACY OF 91% IS OBTAINED ELSE THE TEST ACCURACY DOESN'T RISE ABOVE 78%
 
 x = layer_dict['block5_pool'].output
 #add flatten layer so we can add the fully connected layer later
@@ -28,11 +28,12 @@ x = Dense(64, activation='relu')(x)
 x = Dropout(0.2)(x)
 #this is the final layer so the size of output in this layer is equal to the number of class in our problem
 x = Dense(1, activation='sigmoid')(x)
-#create the new model
-model = Model(input=vgg_model.input, output=x)
+#create the new model(recently the Model parameters were changed from input to inputs and output changed to outputs so it's now inputs = vgg16_model.input)
+model = Model(inputs=vgg_model.input, outputs=x)
+#print(model.summary())
 
 import pandas as pd
-dataset=pd.read_csv('theFinalDataset.csv')
+dataset=pd.read_csv('../dataset/theFinalDataset.csv')
 image_array = []
 classLabels=[]
 
@@ -46,7 +47,6 @@ for j in range(0, 10000):
             pixel_index = i * 64
             data[i] = pixel_data[pixel_index:pixel_index + 64]
         normData=[x/255 for x in data]
-        #np.repeat(a[:, :, np.newaxis], 3, axis=2)
         normData=np.asarray(normData)
         normData=np.repeat(normData[:, :, np.newaxis],3,axis=2)
         image_array.append(np.array(normData))
@@ -63,7 +63,6 @@ x_train, x_test, y_train, y_test = train_test_split(image_array, classLabels, te
 
 x_train=x_train.reshape(x_train.shape[0],64,64,3)
 x_test=x_test.reshape(x_test.shape[0], 64,64,3)
-#New Tensorflow changes, the y values MUST BE A NUMPY ARRAY can't be a list anymore
 y_train = np.asarray(y_train)
 y_test = np.asarray(y_test)
 
@@ -76,8 +75,8 @@ gen = ImageDataGenerator(featurewise_center=False,
                         zoom_range=.1,
                         horizontal_flip=True)
 
-
-model.compile(optimizer='adam', loss="binary_crossentropy", metrics=["accuracy"])
+#ADAMAX WORKS BEST 
+model.compile(optimizer='adamax', loss="binary_crossentropy", metrics=["accuracy"])
 
 print(y_train)
 c_dogs=0
@@ -90,7 +89,8 @@ for i in range(0,len(y_train)):
 print("Dogs: ", c_dogs, "\tCats: ", c_cats)
 
 train_generator = gen.flow(x_train, y_train, batch_size=128)
-history=model.fit_generator(train_generator, steps_per_epoch=128, epochs=37)
+#New Tensorflow update steps_per_epoch = length of x_train divided by the batch size
+history=model.fit_generator(train_generator, steps_per_epoch=len(x_train)//128, epochs=37)
 #model.fit(x_train, y_train, batch_size=64, epochs=25)
 train_score = model.evaluate(x_train, y_train, verbose=1)
 print('Train loss:', train_score[0])
@@ -119,5 +119,4 @@ with open("../model/modelVGG16.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
 model.save_weights("../model/modelweightsVGG16.h5")
-
 
