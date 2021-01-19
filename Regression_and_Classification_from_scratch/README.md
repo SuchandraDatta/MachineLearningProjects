@@ -3,10 +3,12 @@ Implemented so far
 2. Logistic Regression
 3. KNN
 4. K means clustering
-5. Naive Bayes
+5. K means for latitude longitude data
+6. Naive Bayes
 <br/><br/><br/><br/>
 
-
+**Jupyter Notebooks for each of these are present**
+<br/><br/>
 :fallen_leaf: **1. Linear Regression with L2 regularization(Ridge regression)**
 
 ![colab_pic3](https://user-images.githubusercontent.com/41965125/80490449-fbb43f80-897e-11ea-890d-0ee16786e6a8.png)
